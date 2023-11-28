@@ -5,5 +5,6 @@
 - keyboard w/ fpga
 - vga display user inputs and fpga output
 - encryption schemes
+- external language for encryption?
 
 spam office hours (grad students)
