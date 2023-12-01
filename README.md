@@ -10,6 +10,7 @@
     2. Using Tera Term serial terminal (Rayan)
        - https://digilent.com/reference/programmable-logic/guides/serial-terminals/start?redirect=1
        - https://digilent.com/reference/programmable-logic/guides/serial-terminals/windows
+       - https://stackoverflow.com/questions/32429678/how-to-transfer-a-binary-file-through-serial
     3. Using PuTTy serial terminal (Jackson)
         - https://www.youtube.com/watch?v=L1D5rBwGTwY
 - Implement encryption scheme in Verilog (Jilin)
