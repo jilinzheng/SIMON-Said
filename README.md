@@ -1,18 +1,18 @@
 # [FPGA Encryption]
 
 ## Current Tasks for Tuesday, December 5th, 19:30
-- Prepare presentation for coming Wednesday [ALL]
+- Prepare presentation for coming Wednesday (ALL)
 - Investigate three serial connection/UART methods:
-    1. Using Arduino, logic converter, serial Arduino's serial monitor [Renad]
+    1. Using Arduino, logic converter, serial Arduino's serial monitor (Renad)
        - https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-monitor
        - https://www.youtube.com/watch?v=UclW1Nu0qkU
        - https://www.youtube.com/watch?v=nHcseoB6a24
-    2. Using Tera Term serial terminal []
+    2. Using Tera Term serial terminal (Rayan)
        - https://digilent.com/reference/programmable-logic/guides/serial-terminals/start?redirect=1
        - https://digilent.com/reference/programmable-logic/guides/serial-terminals/windows
-    3. Using PuTTy serial terminal [Jackson]
+    3. Using PuTTy serial terminal (Jackson)
         - https://www.youtube.com/watch?v=L1D5rBwGTwY
-- Implement encryption scheme in Verilog
+- Implement encryption scheme in Verilog (Jilin)
 
 - Additional Resources
     - UART:
