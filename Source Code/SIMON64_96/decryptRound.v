@@ -1,11 +1,12 @@
 `timescale 1ns / 1ps
+
 module decryptRound #(parameter n = 32)(       
     // Parametrized n-bit word size (Note that n = 16, 24, 32, 48, or 64 ONLY)
     input [2*n-1:0] inBlock,         // Input 2n-bit block
     input [n-1:0] roundKey,          // Input n-bit roundKey (from keySchedule)
 
     output [2*n-1:0] outBlock        // Output 2n-bit block
-);
+    );
 
     // Split inBlock into n-bit words
     wire [n-1:0] wordX = inBlock[n-1:0];         // Least-significant n-bits P/Ct[0]
