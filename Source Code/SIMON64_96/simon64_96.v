@@ -1,11 +1,12 @@
 `timescale 1ns / 1ps
 
 module simon64_96(
-        input [63:0] plaintext,     // 64-bit block size => 32-bit word size = n
+        input encryptOrDecrypt,     // Select encryption (1) or decryption (0) output
+        input [63:0] inText,     // 64-bit block size => 32-bit word size = n
         input [95:0] key,           // 96-bit key size/32-bit words = 3 key words = m
         
         //output [31:0] finalKey,      // test key that prints the keys during generate iterations
-        output [63:0] ciphertext    // encrypted text
+        output [63:0] outText    // encrypted text
     );
     
     // For a SIMON64/96 cipher,
@@ -54,34 +55,57 @@ module simon64_96(
     generate                        // Generate all roundKeys
         for (i = 3; i < 42; i = i + 1) begin
             keySchedule rk(seqC, shiftZs[i-3], roundKeys[i-3], roundKeys[i-1], shiftZs[i-2], roundKeys[i]);
+            /*
             always @ * begin
                 //$display ("Previous shiftZ was %b",shiftZs[i-3]);
                 $display ("Newly-generated %d roundKey is %h. ", i, roundKeys[i]);
             end
+            */
         end
     endgenerate
     //assign final = roundKeys[41];
     
-    // Round - left off trying to NOT save all rounds (unnecessary)
-    wire [63:0] intermediates [41:0];
-    //wire [63:0] intermediates [1:0];
-    round r0(plaintext, roundKeys[0], intermediates[0]);
+    // Encryption Rounds - left off trying to NOT save all rounds (unnecessary)
+    wire [63:0] encryptRounds [41:0];
+    //wire [63:0] encryptRounds [1:0];
+    round r0Encrypt(inText, roundKeys[0], encryptRounds[0]);
     generate
         for (i = 1; i < 42; i = i + 1) begin
-            round r(intermediates[i-1], roundKeys[i], intermediates[i]);
+            round rEncrypt(encryptRounds[i-1], roundKeys[i], encryptRounds[i]);
+            always @ * begin
+                $display ("encryptRound %d is %h.",i,encryptRounds[i]);
+            end
             /*
             case (i % 2)
                 0: round r(intermediates[1], roundKeys[i], intermediates[0]);
                 1: round r(intermediates[0], roundKeys[i], intermediates[1]);
             endcase
             */
+            /*
             always @ * begin
                 //$display ("Previous shiftZ was %b",shiftZs[i-3]);
-                $display ("Intermediate %d is %h. ", i, intermediates[i]);
-            end    
+                $display ("Intermediate %d is %h. ", i, encryptRounds[i]);
+            end
+            */
         end
     endgenerate
     
-    assign ciphertext = intermediates[41];
+    // Decryption Rounds - left off trying to implement decryption
+    wire [63:0] decryptRounds [41:0];
+    //decryptRound r0Decrypt({ inText[31:0], inText[63:32] }, roundKeys[41], decryptRounds[41]);
+    decryptRound r0Decrypt(inText, roundKeys[41], decryptRounds[41]);
+    always @ * begin $display ("First(41st?) decryptRound: %h",decryptRounds[41]); end
+    
+    generate
+        for (i = 40; i >= 0; i = i - 1) begin
+            decryptRound rDecrypt(decryptRounds[i+1], roundKeys[i], decryptRounds[i]);
+            always @ * begin
+                $display ("decryptRound %d is %h.",i,decryptRounds[i]);
+            end
+        end
+    endgenerate
+    
+    // Select appropriate text to output
+    assign outText = encryptOrDecrypt ? encryptRounds[41] : decryptRounds[0];
     
 endmodule
