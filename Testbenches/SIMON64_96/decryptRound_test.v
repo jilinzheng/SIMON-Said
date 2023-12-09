@@ -11,7 +11,7 @@ module decryptRound_test(
     decryptRound DUT(inBlock, subkey, outBlock);
     
     initial begin
-        inBlock = 64'h5ca2e27f111a8fc8;     // first ASCII character entered are LSB "Little Endian"
+        inBlock = 64'h5ca2e27f111a8fc8;     // First ASCII character entered is LSB (0x63)
         subkey = 32'hb082bddc;              // roundKey[41]    
         
         #10 $finish;

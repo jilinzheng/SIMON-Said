@@ -8,11 +8,12 @@ module decryptRound #(parameter n = 32)(
 );
 
     // Split inBlock into n-bit words
-    wire [n-1:0] wordX = inBlock[n-1:0];         // Least significant n-bits P/Ct[0]
-    wire [n-1:0] wordY = inBlock[2*n-1:n];       // Most significant n-bits P/Ct[1]
+    wire [n-1:0] wordX = inBlock[n-1:0];         // Least-significant n-bits P/Ct[0]
+    wire [n-1:0] wordY = inBlock[2*n-1:n];       // Most-significant n-bits P/Ct[1]
+    
     
     // Execute round operations
-    reg [n-1:0] newX, newY, temp;               // To hold during and output after the round
+    reg [n-1:0] newX, newY, temp;                // To hold during and output after the round
     always @ * begin
         temp = wordX;
         newX = wordY ^
@@ -21,6 +22,7 @@ module decryptRound #(parameter n = 32)(
                 roundKey;
         newY = temp;
     end
+    
     
     assign outBlock = {newY, newX};
 
