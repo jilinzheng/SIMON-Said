@@ -62,12 +62,19 @@ module simon64_96(
     endgenerate
     //assign final = roundKeys[41];
     
-    // Round
+    // Round - left off trying to NOT save all rounds (unnecessary)
     wire [63:0] intermediates [41:0];
+    //wire [63:0] intermediates [1:0];
     round r0(plaintext, roundKeys[0], intermediates[0]);
     generate
         for (i = 1; i < 42; i = i + 1) begin
             round r(intermediates[i-1], roundKeys[i], intermediates[i]);
+            /*
+            case (i % 2)
+                0: round r(intermediates[1], roundKeys[i], intermediates[0]);
+                1: round r(intermediates[0], roundKeys[i], intermediates[1]);
+            endcase
+            */
             always @ * begin
                 //$display ("Previous shiftZ was %b",shiftZs[i-3]);
                 $display ("Intermediate %d is %h. ", i, intermediates[i]);
