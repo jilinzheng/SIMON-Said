@@ -1,5 +1,11 @@
 `timescale 1ns / 1ps
 
+/*
+    The expected outputs during each simulation interval are obtained from
+    the official NSA SIMON Implementation Guide:
+    https://nsacyber.github.io/simon-speck/implementations/ImplementationGuide1.1.pdf
+*/
+
 module keySchedule_test(
 
     );
@@ -15,7 +21,7 @@ module keySchedule_test(
     
     initial begin
         seqC = 32'hfffffffc;
-        constSeqZ = 62'b10101111011100000011010010011000101000010001111110010110110011; // 64/96
+        constSeqZ = 64'h7369f885192c0ef5; // 64/96
         roundKeyMinus3 = 32'h03020100;
         roundKeyMinus1 = 32'h13121110;
         // Output should be 0xffae9dce
@@ -26,5 +32,6 @@ module keySchedule_test(
         roundKeyMinus1 = 32'hffae9dce;
         // Output should be 0xc4facc91
         
+        // ADD 8 MORE
     end
 endmodule

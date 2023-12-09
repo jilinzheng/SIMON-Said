@@ -13,20 +13,7 @@ module keySchedule #(
         output reg [n-1:0] roundKey     // generated roundKey
     );
     
-    // Only word size of 32 supported right now
-    localparam T = 42;      // T rounds (CURRENTLY NOT USED)
-    localparam j = 2;       // z_[j] constant sequence (CURRENTLY NOT USED)
-    
     // Key scheduling (one key)
-    /* doing the overall expansion via generate blocks 'outside', so one roundkey 'inside'
-    integer i;
-    reg [n-1:0] temp;
-    always @ (*) begin
-        for (i = m; i < T - 1; i = i+1) begin
-            
-        end
-    end
-    */
     always @ * begin
         roundKey = seqC ^
                    (constSeqZ & 1) ^
