@@ -9,10 +9,11 @@
 module uart_test(
     input clk_100MHz,       //  FPGA clock signal
     input reset,            // btnR    
-    input btn,              //encrypt button
-    input btn2,               //encrypt end button
+    input btn,              // Encrypt button
+    input btn2,             // Encrypt end button
     input rx,               // USB-RS232 Rx
     output tx,              // USB-RS232 Tx
+    input switch,           //switch for encrypt or decrypt
     output [7:0] an,        // 7 segment display digits
     output [0:6] seg        // 7 segment display segments
     );
@@ -64,7 +65,7 @@ module uart_test(
     //ENCRYPTION PERFORMED HERE
     simon64_96 encoder
     (
-        .encryptOrDecrypt(1),
+        .encryptOrDecrypt(switch),
         .inText(encrypt_in),
         .outText(encrypt_out)
     );
