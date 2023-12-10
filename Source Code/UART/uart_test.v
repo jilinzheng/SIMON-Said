@@ -19,7 +19,7 @@ module uart_test(
     // Connection Signals
     wire rx_full, rx_empty; //to display on 7 segment to help keep track of whats going on
     
-    //variables encrypt in middle of fifos
+    //variables encrypt in middle of fifos, CHANGE THESE TO EXACT AMOUNT OF BITS WORKING WITH
     wire [63:0] encrypt_in, encrypt_out;
     
     // Complete UART Core
