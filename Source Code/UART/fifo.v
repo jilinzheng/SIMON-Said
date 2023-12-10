@@ -5,7 +5,7 @@
 module fifo
 	#(
 	   parameter	DATA_SIZE 	   = 8,	       // number of bits in a data word
-				    ADDR_SPACE_EXP = 3	       // number of address bits (2^3 = 8 addresses)
+			ADDR_SPACE_EXP = 3	       // number of address bits (2^3 = 8 addresses)
 	)
 	(
 	   input clk_100MHz,                              // FPGA clock           
@@ -20,9 +20,11 @@ module fifo
 
 	// signal declaration
 	reg [DATA_SIZE-1:0] memory [2**ADDR_SPACE_EXP-1:0];		// memory array register
-	reg [ADDR_SPACE_EXP-1:0] current_write_addr, current_write_addr_buff, next_write_addr;
-	reg fifo_full, fifo_empty, full_buff, empty_buff;
-	wire write_enabled;
+	reg [ADDR_SPACE_EXP-1:0] current_write_addr, current_write_addr_buff, next_write_addr;  //varaibles to shift through the memory array when writing
+	reg fifo_full, fifo_empty, full_buff, empty_buff;      //keep track of the status of full/empty
+	wire write_enabled;        //can only write when fifo not full
+	
+	//NOTE: WHENEVER SOMETHING IS EDITED, THE BUFFER IS EDITED AND THEN THE ACTUAL VALUE IS UPDATED IN AN ALWAYS BLOCK
 	
 	// register file (memory) write operation
 	always @(posedge clk_100MHz)
@@ -30,6 +32,7 @@ module fifo
 			memory[current_write_addr] <= write_data_in;
 			
 	// register file (memory) read operation
+	//IF DATA_SIZE IS CHANGED, THIS HAS TO BE HARDCODED TO WORK WITH NEW DATA
 	assign read_data_out = {memory[0],memory[1],memory[2],memory[3],memory[4],memory[5],memory[6],memory[7]};
 	
 	// only allow write operation when FIFO is NOT full
@@ -39,11 +42,13 @@ module fifo
 	// register logic
 	always @(posedge clk_100MHz or posedge reset)
 		if(reset) begin
+		      //reset means back to first address when writing, no longer empty, now full
 			current_write_addr 	<= 0;
 			fifo_full 			<= 1'b0;
-			fifo_empty 			<= 1'b1;       // FIFO is empty after reset
+			fifo_empty 			<= 1'b1;     
 		end
 		else begin
+		      //set the current address, full status, empty status to the status in the buffer
 			current_write_addr  <= current_write_addr_buff;
 			fifo_full  			<= full_buff;
 			fifo_empty 			<= empty_buff;
@@ -54,7 +59,7 @@ module fifo
 		// successive pointer values
 		next_write_addr = current_write_addr + 1;
 		
-		// default: keep old values
+		// default: keep old values, make sure buff is same as actual
 		current_write_addr_buff = current_write_addr;
 		full_buff  = fifo_full;
 		empty_buff = fifo_empty;
@@ -62,20 +67,21 @@ module fifo
 		// Button press logic
 		case({write_to_fifo, read_from_fifo})     // check both buttons
 			// 2'b00: neither buttons pressed, do nothing
-			// 2'b11: nothing can happen
+			// 2'b11: both buttons pressed, do nothing
 			
 			2'b01:	// read button pressed?
 				if(fifo_full) begin   // FIFO not empty
 					full_buff = 1'b0;   // after read, FIFO not full anymore
-					empty_buff = 1'b1; //FIFO is empty
-					current_write_addr_buff = 0;   //functional restart
+					empty_buff = 1'b1; //FIFO is empty, refer to description below
+					current_write_addr_buff = 0;   //functional restart since once the data is read we "empty" the buffer by going back to address 0 
+					                               //writing is allowed again since empty
 				end
 			
 			2'b10:	// write button pressed?
 				if(~fifo_full) begin	// FIFO not full
-					current_write_addr_buff = next_write_addr;
+					current_write_addr_buff = next_write_addr; //if write then move to next address
 					empty_buff = 1'b0;  // after write, FIFO not empty anymore
-					if(next_write_addr == 0)
+					if(next_write_addr == 0)       //if the next address is 0, that means current address is max meaning the fifo is full
 						full_buff = 1'b1;
 				end
 				
