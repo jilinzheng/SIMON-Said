@@ -40,8 +40,7 @@ module uart_top
     (
         input clk_100MHz,               // FPGA clock
         input reset,                    // reset
-        input encrypt,                  // button1
-	input encrypt_end,		// button2
+	input encrypt_end,		// button
         input rx,                       // serial data in
         output tx,                      // serial data out
         output rx_empty,                //to display on 7 segment
@@ -99,7 +98,7 @@ module uart_top
             .clk_100MHz(clk_100MHz),
             .reset(reset),
             .write_to_fifo(rx_done),    //put ascii into fifo everytime receieve (until all 8 ascii in)
-	        .read_from_fifo(encrypt),    //start encryption with button
+	        .read_from_fifo(rx_full),    //start encryption with button
 	        .write_data_in(rx_data_out),   //put ascii into fifo
 	        .read_data_out(read_data),  //64 bits of data to encrypt
 	        .empty(rx_empty),  //output for display
