@@ -1,12 +1,9 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Reference Book: FPGA Prototyping By Verilog Examples Xilinx Spartan-3 Version
-// Authored by: Dr. Pong P. Chu
-// Published by: Wiley
+// 
 //
-// Adapted for the Basys 3 Artix-7 FPGA by David J. Marion
-//
-// Top Module for the Complete UART System
+// Code adapted from https://www.youtube.com/watch?v=L1D5rBwGTwY, FPGA DUDE
+// Specifically baud rate generator, receiver, and transmitter
 //
 // Setup for 9600 Baud Rate
 //
@@ -30,8 +27,6 @@
 // 100 * 10^6 / 24,000 = ~4,167     (counter limit M)
 // log2(4167) = 13                  (counter bits N) 
 //
-// Comments:
-// - Many of the variable names have been changed for clarity
 //////////////////////////////////////////////////////////////////////////////////
 
 module uart_top
@@ -121,7 +116,7 @@ module uart_top
             .clk_100MHz(clk_100MHz),
             .reset(reset),
             .write_to_fifo(encrypt),    //load the 64 bits when button pressed
-	        .read_from_fifo(tx_done),    //whenever not transmitting, transmit
+	        .read_from_fifo(tx_done),    //whenever not transmitting, send to transmitter
 	        .write_data_in(write_data),   //put 64 bits in memory
 	        .read_data_out(tx_fifo_out),  //ascii to output
 	        .empty(tx_empty)  //output for display
@@ -139,9 +134,9 @@ module uart_top
             .reset(reset),
             .tx_start(tx_fifo_not_empty),   //as soon as there is something in the fifo_tx_unit, send it out to screen
             .sample_tick(tick),
-            .data_in(tx_fifo_out),
-            .tx_done(tx_done),
-            .tx(tx)
+            .data_in(tx_fifo_out),  //take in what comes out of fifo2
+            .tx_done(tx_done),      //when tx done then the data comes in from fifo2
+            .tx(tx)     //send back to host computer
          );
          
      assign tx_fifo_not_empty = ~tx_empty;
