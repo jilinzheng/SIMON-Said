@@ -9,8 +9,7 @@
 module uart_test(
     input clk_100MHz,       //  FPGA clock signal
     input reset,            // btnR    
-    input btn,              // Encrypt button
-    input btn2,             // Encrypt end button
+    input btn,              // Encrypt end button
     input rx,               // USB-RS232 Rx
     output tx,              // USB-RS232 Tx
     input switch,           //switch for encrypt or decrypt
@@ -29,8 +28,7 @@ module uart_test(
         (
             .clk_100MHz(clk_100MHz),
             .reset(reset),            //reset when middle button pressed
-            .encrypt(btn_tick),     //encrypt when middle button pressed
-            .encrypt_end(btn_tick2),//end encrypt when bottom button pressed
+            .encrypt_end(btn_tick),//end encrypt when bottom button pressed
             .rx(rx),                //receieved data
             .tx(tx),                //transmitted data
             .rx_full(rx_full),      //buffer full for 7 segment
@@ -40,6 +38,7 @@ module uart_test(
         );
         
     // Button Debouncer
+
     debounce_explicit BUTTON_DEBOUNCER
         (
             .clk_100MHz(clk_100MHz),
@@ -47,15 +46,6 @@ module uart_test(
             .btn(btn),         
             .db_level(),  
             .db_tick(btn_tick)  //the button will start encoding so needs to be debounced
-        );
-
-    debounce_explicit BUTTON_DEBOUNCER2
-        (
-            .clk_100MHz(clk_100MHz),
-            .reset(reset),
-            .btn(btn2),         
-            .db_level(),  
-            .db_tick(btn_tick2)  //the button will start encoding so needs to be debounced
         );
     
     //display if buffer full or empty    
