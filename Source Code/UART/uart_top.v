@@ -45,8 +45,8 @@ module uart_top
         output tx,                      // serial data out
         output rx_empty,                //to display on 7 segment
         output rx_full,                 //to display on 7 segment
-        output [63:0] read_data,   //data out of rx fifo
-        input [63:0] write_data    //data into tx fifo
+        output [DBITS*(2**FIFO_EXP)-1:0] read_data,   //data out of rx fifo
+        input [DBITS*(2**FIFO_EXP)-1:0] write_data    //data into tx fifo
     );
     
     // Connection Signals
