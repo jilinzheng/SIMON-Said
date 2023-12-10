@@ -1,15 +1,13 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Reference Book: FPGA Prototyping By Verilog Examples Xilinx Spartan-3 Version
-// Authored by: Dr. Pong P. Chu
-// Published by: Wiley
+// 
 //
-// Adapted for the Basys 3 Artix-7 FPGA by David J. Marion
+// 
 //
-// UART Transmitter for the UART System
+// Code adapted from https://www.youtube.com/watch?v=L1D5rBwGTwY, FPGA DUDE
 //
-// Comments:
-// - Many of the variable names have been changed for clarity
+//
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 module uart_transmitter
