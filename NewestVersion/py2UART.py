@@ -13,7 +13,7 @@ if (userChoice == "H"):
   userInput = input("Enter a hex value: ")
   utf8Encode = userInput.encode('utf-8')
   hexConversion = ''.join([f'\\x{byte:02x}' for byte in utf8Encode])
-  test = f''b'{hexConversion}'
+  test = f"b'{hexConversion}'"
 
   ser.write(test)
   
