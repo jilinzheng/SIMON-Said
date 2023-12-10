@@ -41,15 +41,15 @@ module fifo2
 	
 	// register file (memory) is now the data_in
     always @(posedge clk_100MHz) begin
-        memory[0] = write_data_in[7:0];
-        memory[1] = write_data_in[15:8];
-        memory[2] = write_data_in[23:16];
-        memory[3] = write_data_in[31:24];
-        memory[4] = write_data_in[39:32];
-        memory[5] = write_data_in[47:40];
-        memory[6] = write_data_in[55:48];
-        memory[7] = write_data_in[63:56];
-    end		
+        memory[0] = write_data_in[63:56];
+        memory[1] = write_data_in[55:48];
+        memory[2] = write_data_in[47:40];
+        memory[3] = write_data_in[39:32];
+        memory[4] = write_data_in[31:24];
+        memory[5] = write_data_in[23:16];
+        memory[6] = write_data_in[15:8];
+        memory[7] = write_data_in[7:0];
+    end	
     
 	// register file (memory) read operation
 	assign read_data_out = memory[current_read_addr];
