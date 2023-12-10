@@ -15,6 +15,7 @@
 module uart_test(
     input clk_100MHz,       //  FPGA clock signal
     input reset,            // btnR    
+    input btn,              //encrypt button
     input rx,               // USB-RS232 Rx
     output tx,              // USB-RS232 Tx
     output [7:0] an,        // 7 segment display digits
@@ -25,14 +26,14 @@ module uart_test(
     wire rx_full, rx_empty;
     
     //encrypt in middle of fifos
-    wire [7:0] encrypt_in, encrypt_out;
+    wire [63:0] encrypt_in, encrypt_out;
     
     // Complete UART Core
     uart_top UART_UNIT
         (
             .clk_100MHz(clk_100MHz),
             .reset(reset),
-            .encrypt(btn),
+            .encrypt(btn_tick),
             .rx(rx),
             .tx(tx),
             .rx_full(rx_full),
