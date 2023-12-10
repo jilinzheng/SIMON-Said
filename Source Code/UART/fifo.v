@@ -13,7 +13,7 @@ module fifo
 	   input write_to_fifo,                    // signal start writing to FIFO
 	   input read_from_fifo,                   // signal start reading from FIFO
 	   input [DATA_SIZE-1:0] write_data_in,    // data word into FIFO
-	   output [DATA_SIZE*(ADDR_SPACE_EXP**2)-1:0] read_data_out,   // data word out of FIFO with all 8 ascii
+	   output [DATA_SIZE*(ADDR_SPACE_EXP**2)-1:0] read_data_out,   // data word out of FIFO with all however many ascii
 	   output empty,                           // FIFO is empty (no read)
 	   output full	                           // FIFO is full (no write)
 );
