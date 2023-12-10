@@ -29,7 +29,7 @@ module fifo2
 	   input reset,                            // reset button
 	   input write_to_fifo,                    // signal start writing to FIFO
 	   input read_from_fifo,                   // signal start reading from FIFO
-	   input [DATA_SIZE*(ADDR_SPACE_EXP**2)-1:0] write_data_in,    // data word into FIFO (howevr many bits of encrypted)
+	   input [DATA_SIZE*(2**ADDR_SPACE_EXP)-1:0] write_data_in,    // data word into FIFO (howevr many bits of encrypted)
 	   output [DATA_SIZE-1:0] read_data_out,   // data word out of FIFO (one ascii character at a time)
 	   output empty                           // FIFO is empty (no read)
 );
