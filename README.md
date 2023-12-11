@@ -10,7 +10,7 @@ To run this program, all the user needs is a message to send. Assuming the FPGA 
 
 ...the user can press the center button on the FPGA board to receive the output. This output will be in Hexadecimal, and depending on the user's earlier choice will either be the encrypted or decrypted version of their input.
 
-OR
+***OR***
 
 ...the FPGA board will automatically output either the encrypted or decrypted version of their input, depending on the user's earlier choice. 
 
