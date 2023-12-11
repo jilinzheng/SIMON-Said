@@ -7,21 +7,27 @@ from datetime import datetime
 # Set the serial connection
 ser = serial.Serial(port='COM5', baudrate=9600, timeout=1)
 
+
 # Receive user input
-print("Make sure your switch is '1' for 'Encryption' and '0' for 'Decryption'!")    
-userChoice = input("ASCII or Hex? Type 'A' or 'H' in English.")
+print("Make sure your switch is '1' for 'Encryption' and '0' for 'Decryption'!")
 
-# Ensure user enters legal input
+userKey = input("Your key must be 24 hexadecimal characters(12 characters/96 bits). Please enter your key in hex: ")
+while (len(userKey) != 24):
+    userKey = input("Read carefully. Your key must be 12 characters/96 bits. Please enter your key in hex: ")
+
+userChoice = input("\nNow enter your data in ASCII or Hex. Type 'A' or 'H' in English. ")
 while (userChoice != "A") and (userChoice != "H"):
-    userInput = input("You entered an invalid character! ASCII or Hex? Type 'A' or 'H' in English.")
+    userInput = input("You entered an invalid character! ASCII or Hex? Type 'A' or 'H' in English. ")
 
-# 
+
 if userChoice == "H":                                   # User chooses to input hexadecimal
-    userInput = input("Enter a hex value: ")            
+    userInput = input("\nEnter your hex data (up to 16 hex digits): ")            
     
     startTime = datetime.now()                          # Record the starting time for latency evaluation
     
-    writeData = bytes.fromhex(userInput)                # Convert user input into bytes object
+    # Convert user input into bytes object with padding
+    writeData = bytes.fromhex(userKey + userInput + "7E7E7E7E7E7E7E7E7E7E7E7E")
+    # print(writeData)
     ser.write(writeData)                                # Send data to FPGA
     print("Write Success!")
     
@@ -47,7 +53,8 @@ if userChoice == "H":                                   # User chooses to input 
             print(f"Raw Bytes: {rawData}")
 
 elif userChoice == "A":                                 # User chooses to input ASCII; the rest of the script mirrors that of
-    userInput = input("Enter an ASCII string: ")        # the hexadecimal conditional block above (if userChoice == "H")
+    userInput = input("Enter an ASCII string (up to 8 characters): ")        # the hexadecimal conditional block above (if userChoice == "H")
+    print(len(userInput))
 
     startTime = datetime.now()
 
