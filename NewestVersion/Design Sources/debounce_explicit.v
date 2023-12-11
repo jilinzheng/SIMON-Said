@@ -2,7 +2,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 // 
 //
-//Code adapted from https://www.youtube.com/watch?v=L1D5rBwGTwY, FPGA DUDE
+// Code adapted from https://www.youtube.com/watch?v=L1D5rBwGTwY, FPGA DUDE
 //
 //
 //
