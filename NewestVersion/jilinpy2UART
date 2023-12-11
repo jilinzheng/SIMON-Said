@@ -1,0 +1,49 @@
+import serial
+import time
+
+ser = serial.Serial(port='COM3', baudrate=9600, timeout=1)
+
+userChoice = input("ASCII or Hex? Type 'A' or 'H'.")
+if userChoice == "H":
+    userInput = input("Enter a hex value: ")
+    
+    writeData = bytes.fromhex(userInput)
+    print(writeData)
+
+    ser.write(writeData)
+
+    while True:
+        print("Write Success!")
+        break
+
+        raw_data = ser.readline()
+        hexData = raw_data.hex(" ")
+        try:
+            print(hexData)
+            if len(hexData) > 3:
+                break
+        except UnicodeDecodeError as e:
+            print(f"Error decoding bytes: {e}")
+            print(f"Raw Bytes: {raw_data}")
+
+elif userChoice == "A":
+    userInput = input("Enter an ASCII string: ")
+
+    utf8Encode = userInput.encode('utf-8')
+    writeData = f"b'{utf8Encode.decode('unicode_escape')}'"
+   
+    ser.write(writeData)
+   
+    while True:
+        raw_data = ser.readline()
+        try:
+            value = raw_data.decode('utf-8', errors='replace')
+            print(f"Decoded Value: {value}")
+            if len(value) > 3:
+                break
+        except UnicodeDecodeError as e:
+            print(f"Error decoding bytes: {e}")
+            print(f"Raw Bytes: {raw_data}")
+
+else:
+    print("You entered an invalid character!")
