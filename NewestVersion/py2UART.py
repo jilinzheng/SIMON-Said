@@ -1,45 +1,78 @@
+import serial
+from datetime import datetime
+
 # Run the following command to view the connected devices
 # python -m serial.tools.list_ports
-import serial
-import time
 
-ser = serial.Serial(port='COM4', baudrate=9600, timeout=1)
-userChoice = input("ASCII or Hex? Type 'A' or 'H'.")
-while (userChoice != "A") and (userChoice!= "H"):
-    userChoice = input("You entered an invalid character! ASCII or Hex? Type 'A' or 'H'.")
+# Set the serial connection
+ser = serial.Serial(port='COM5', baudrate=9600, timeout=1)
+
+# Receive user input
+print("Make sure your switch is '1' for 'Encryption' and '0' for 'Decryption'!")    
+userChoice = input("ASCII or Hex? Type 'A' or 'H' in English.")
+
+# Ensure user enters legal input
+while (userChoice != "A") and (userChoice != "H"):
+    userInput = input("You entered an invalid character! ASCII or Hex? Type 'A' or 'H' in English.")
+
+# 
+if userChoice == "H":                                   # User chooses to input hexadecimal
+    userInput = input("Enter a hex value: ")            
     
-if userChoice == "H":
-    userInput = input("Enter a hex value: ")
-    hexBytes = bytes.fromhex(userInput)
+    startTime = datetime.now()                          # Record the starting time for latency evaluation
     
-    ser.write(hexBytes)
+    writeData = bytes.fromhex(userInput)                # Convert user input into bytes object
+    ser.write(writeData)                                # Send data to FPGA
+    print("Write Success!")
+    
+    while True:                                         # Continuously read serial data
+        rawData = ser.readline()                        
+        # print("Time elapsed: ")
+        # print(datetime.now() - startTime)
+
+        hexData = rawData.hex(" ")                      # Format data into hex
+        
+        try:
+            # print(hexData)
+            if len(hexData) > 0:                        # If we have received data
+                print("Time elapsed: ", end = "")       # Print the elapsed time
+                print(datetime.now() - startTime)
+                
+                print("Hex data: ", end = "")           # Print the hexadecimal data
+                print(hexData)
+                break
+                
+        except UnicodeDecodeError as e:                 # If there is a decoding error, raise an exception
+            print(f"Error decoding bytes: {e}")
+            print(f"Raw Bytes: {rawData}")
+
+elif userChoice == "A":                                 # User chooses to input ASCII; the rest of the script mirrors that of
+    userInput = input("Enter an ASCII string: ")        # the hexadecimal conditional block above (if userChoice == "H")
+
+    startTime = datetime.now()
+
+    writeData = bytes(userInput, 'utf-8')
+    ser.write(writeData)
+    print("Write Success!")
     
     while True:
-        raw_data = ser.readline()
-        hexData = raw_data.hex(" ")
+        rawData = ser.readline()
+        # print("Time elapsed: ")
+        # print(datetime.now() - startTime)
+
+        hexData = rawData.hex(" ")
+        
         try:
-            print(hexData)
-            if len(hexData) > 3:
+            # print(hexData)
+            if len(hexData) > 0:
+                print("Time elapsed: ", end = "")
+                print(datetime.now() - startTime)
+                
+                print("Hex data: ", end = "")
+                print(hexData)
                 break
+                
         except UnicodeDecodeError as e:
             print(f"Error decoding bytes: {e}")
-            print(f"Raw Bytes: {raw_data}")
-
-elif userChoice == "A":
-    userInput = input("Enter an ASCII string: ")
-    utf8Encode = userInput.encode('utf-8')
-    
-    ser.write(utf8Encode)
-    
-    while True:
-        raw_data = ser.readline()
-        try:
-            value = raw_data.decode('utf-8', errors='replace')
-            print(f"Decoded Value: {value}")
-            if len(value) > 3:
-                break
-        except UnicodeDecodeError as e:
-            print(f"Error decoding bytes: {e}")
-            print(f"Raw Bytes: {raw_data}")
-
-
+            print(f"Raw Bytes: {rawData}")
+            
