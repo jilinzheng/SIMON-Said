@@ -14,7 +14,6 @@ if userChoice == "H":
 
     while True:
         print("Write Success!")
-        break
 
         raw_data = ser.readline()
         hexData = raw_data.hex(" ")
