@@ -1,12 +1,13 @@
-
 # Run the following command to view the connected devices
 # python -m serial.tools.list_ports
 import serial
 import time
 
 ser = serial.Serial(port='COM4', baudrate=9600, timeout=1)
-
 userChoice = input("ASCII or Hex? Type 'A' or 'H'.")
+while (userChoice != "A") and (userChoice!= "H"):
+    userChoice = input("You entered an invalid character! ASCII or Hex? Type 'A' or 'H'.")
+    
 if userChoice == "H":
     userInput = input("Enter a hex value: ")
     hexBytes = bytes.fromhex(userInput)
@@ -41,6 +42,4 @@ elif userChoice == "A":
             print(f"Error decoding bytes: {e}")
             print(f"Raw Bytes: {raw_data}")
 
-else:
-    print("You entered an invalid character!")
 
