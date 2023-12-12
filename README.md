@@ -2,8 +2,10 @@
 Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, Jilin Zheng\
 [Demo Link Video]()
 
+
 ## Project Overview
 This is an implementation of the SIMON64/96 block cipher on a Nexus A7, using a Python script to input a 96-bit key and 128-bit message to be encrypted or decrypted. The Python script connects to the FPGA and sends/receives data via UART! Have a look at the section below to get started.
+
 
 ## Running the Project
 1. Download all files in the `Source Code` directory. Create a new [Vivado](https://www.xilinx.com/products/design-tools/vivado.html#:~:text=Vivado%20is%20the%20design%20software,Route%2C%20Verification%2FSimulation%20tools.) project with the [Nexys A7](https://digilent.com/shop/nexys-a7-fpga-trainer-board-recommended-for-ece-curriculum/) as the target board, and add all downloaded files as Source Files. Program the FPGA board by connecting the board to your PC via microUSB-to-USB, Synthesizing, Implementing, Generating Bitstream, and Program Device.
@@ -20,6 +22,7 @@ To run this program, all the user needs is a message to send. Assuming the FPGA 
 ...the FPGA board will automatically output either the encrypted or decrypted version of their input, depending on the user's earlier choice. 
 
 Whether encrypting or decrypting, this output is based on a key, which is meant to be irregularly changed and thus is hard-coded. If the user inputs a real message and our project *encrypts* it, the user will be able to use this key on our or another SIMON64/96 cipher device to decrypt that message back to its original form. This key and its functionality in the SIMON section of the project will be discussed more thoroughly in a later section of this overview.
+
 
 ## Code Overview
 Our code combines two mostly separate systems that were combined toward the end of the project's completion date. These two general systems are the SIMON encrypt/decrypt modules and the UART modules. Additionally, we are utilizing a small but impactful Python script to improve the user interface of our project. Each module is commented on thoroughly to improve readability, and we encourage any potential readers to utilize this to gain a better understanding of this project, as this overview is not intended to provide more than a surface-level description of the project's inner workings.
