@@ -1,6 +1,6 @@
 # SIMON Said!
 Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, Jilin Zheng\
-[Demo Link Video]()
+[Demo Video]()
 
 
 ## Project Overview
