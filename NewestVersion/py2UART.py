@@ -21,15 +21,18 @@ while (userChoice != "A") and (userChoice != "H"):
 
 
 if userChoice == "H":                                   # User chooses to input hexadecimal
-    userInput = input("\nEnter your hex data (up to 16 hex digits): ")            
+    userInput = input("\nEnter your hex data (exactly 32 hex digits): ")            
     
     startTime = datetime.now()                          # Record the starting time for latency evaluation
     
+    padding = ""
+    
     # Convert user input into bytes object with padding
-    writeData = bytes.fromhex(userKey + userInput + "7E7E7E7E7E7E7E7E7E7E7E7E")
+    # writeData = bytes.fromhex(userKey + userInput + "7E7E7E7E7E7E7E7E7E7E7E7E")   # for 16 hex digits
+    writeData = bytes.fromhex(userKey + userInput + "7E7E7E7E")                     # 32 hex digits
     # print(writeData)
     ser.write(writeData)                                # Send data to FPGA
-    print("Write Success!")
+    print("\nWrite Success!")
     
     while True:                                         # Continuously read serial data
         rawData = ser.readline()                        
@@ -46,6 +49,7 @@ if userChoice == "H":                                   # User chooses to input 
                 
                 print("Hex data: ", end = "")           # Print the hexadecimal data
                 print(hexData)
+                print("\n")
                 break
                 
         except UnicodeDecodeError as e:                 # If there is a decoding error, raise an exception
@@ -77,6 +81,7 @@ elif userChoice == "A":                                 # User chooses to input 
                 
                 print("Hex data: ", end = "")
                 print(hexData)
+                print("\n")
                 break
                 
         except UnicodeDecodeError as e:
