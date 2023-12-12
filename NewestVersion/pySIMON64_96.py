@@ -60,13 +60,24 @@ def Simon6496Decrypt(Pt, Ct, rk):
         Pt[0], Pt[1] = R32x2(Pt[0], Pt[1], rk[i], rk[i - 1])
         i -= 2
 
-startTime = datetime.now()
-#Key = [0x13121110, 0x0b0a0908, 0x03020100]
-Key = [0x03020100, 0x0b0a0908, 0x13121110]
+userKey = input("Your key must be 24 hexadecimal characters(12 characters/96 bits). Please enter your key in hex: ")
+while (len(userKey) != 24):
+    userKey = input("Read carefully. Your key must be 12 characters/96 bits. Please enter your key in hex: ")
+
+userChoice = input("\nNow enter your data in ASCII or Hex. Type 'A' or 'H' in English. ")
+while (userChoice != "A") and (userChoice != "H"):
+    userInput = input("You entered an invalid character! ASCII or Hex? Type 'A' or 'H' in English. ")
+
+if userChoice == "H":                                   # User chooses to input hexadecimal
+    userInput = input("\nEnter your hex data (exactly 32 hex digits): ")            
+    userInput = "0x" + userInput
+
+    startTime = datetime.now()                          # Record the starting time for latency evaluation
+
+#Key = [0x03020100, 0x0b0a0908, 0x13121110]
 PT = [0x6e696c63, 0x6f722067]
 rk = Simon6496KeySchedule(Key)
 CT = Simon6496Encrypt(PT, rk)
 print(CT)
 print("Time elapsed: ", end = "")
 print(datetime.now() - startTime)
-#output should be: 5ca2e27f111a8fc8
