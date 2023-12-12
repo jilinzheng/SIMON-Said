@@ -46,7 +46,7 @@ def Simon6496Encrypt(Pt, rk):
     return "{:08X}{:08X}".format(Ct[1], Ct[0])
 
 def Simon6496Decrypt(Pt, Ct, rk):
-    # Decryption function (not used in the provided code)
+    # Decryption function using Simon 64/96 block cipher
     Pt[1] = Ct[1]
     Pt[0] = Ct[0]
     i = 41
