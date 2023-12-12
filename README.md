@@ -1,5 +1,5 @@
 # SIMON Said!
-Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, Jilin Zheng\
+Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, [Jilin Zheng](jilin@bu.edu)\
 [Demo Link Video]()
 
 ## Project Overview
