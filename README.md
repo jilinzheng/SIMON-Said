@@ -9,7 +9,7 @@ Click on the image below to watch our Demo Video!
 
 
 ## Project Overview
-This is an implementation of the SIMON64/96 block cipher on a Nexus A7, using a Python script to input a 96-bit key and 128-bit message to be encrypted or decrypted. The Python script connects to the FPGA, then sends and receives data via UART- have a look at the sections below to get started!
+This is an implementation of the SIMON64/96 block cipher on a Nexys A7, using a Python script to input a 96-bit key and 128-bit message to be encrypted or decrypted. The Python script connects to the FPGA, then sends and receives data via UART- have a look at the sections below to get started!
 
 
 ## Running the Project
