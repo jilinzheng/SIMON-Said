@@ -3,6 +3,7 @@
 
 
 ## Demo Video
+Click on the image below to watch our Demo Video!
 [![Demo Video](https://img.youtube.com/vi/hVuAgoZOnd0/0.jpg)](https://youtu.be/hVuAgoZOnd0)
 
 
