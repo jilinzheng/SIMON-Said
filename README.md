@@ -3,7 +3,7 @@
 
 
 ## Demo Video
-[Fake embed video](https://stackoverflow.com/questions/11804820/how-can-i-embed-a-youtube-video-on-github-wiki-pages)
+[![Demo Video](https://img.youtube.com/vi/hVuAgoZOnd0/0.jpg)](https://youtu.be/hVuAgoZOnd0)
 
 
 ## Project Overview
