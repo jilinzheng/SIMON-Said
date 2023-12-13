@@ -20,7 +20,7 @@ This is an implementation of the SIMON64/96 block cipher on a Nexys A7, using a 
 
 
 ## Code Overview
-A brief overview is provided here for each major component of our project. For readers wishing to gain a more elaborate understanding of this project, we encourage you to see the source code files, which are commented/documented thoroughly, as well as view the [Demo Video](#demo-video).
+A brief overview is provided here for each major component of our project. For readers wishing to gain a more elaborate understanding of this project, we encourage you to see the `Source Code` files, which are commented/documented thoroughly, as well as view the [Demo Video](#demo-video).
 
 ### SIMON64/96
 SIMON64/96, which supports a *64-bit* block with a *96-bit* key, is a particular implementation of one configuration of the SIMON family of block ciphers. SIMON follows the [Feistel structure](https://en.wikipedia.org/wiki/Feistel_cipher), and as such, SIMON ciphers consist of two main functions (modules in this case), the key-schedule function `keySchedule.v` and the round function(s) (`encryptRound.v` and `decryptRound.v`, which encrypt and decrypt, respectively). 
