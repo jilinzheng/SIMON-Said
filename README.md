@@ -1,34 +1,29 @@
 # SIMON Said!
-Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, Jilin Zheng\
-[Demo Video]()
+**Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, Jilin Zheng**
+
+
+## Demo Video
+[Fake embed video](https://stackoverflow.com/questions/11804820/how-can-i-embed-a-youtube-video-on-github-wiki-pages)
 
 
 ## Project Overview
-This is an implementation of the SIMON64/96 block cipher on a Nexus A7, using a Python script to input a 96-bit key and 128-bit message to be encrypted or decrypted. The Python script connects to the FPGA and sends/receives data via UART! Have a look at the section below to get started.
+This is an implementation of the SIMON64/96 block cipher on a Nexus A7, using a Python script to input a 96-bit key and 128-bit message to be encrypted or decrypted. The Python script connects to the FPGA and sends/receives data via UART! Have a look at the section(s) below to get started.
 
 
 ## Running the Project
-1. Download all files in the `Source Code` directory. Create a new [Vivado](https://www.xilinx.com/products/design-tools/vivado.html#:~:text=Vivado%20is%20the%20design%20software,Route%2C%20Verification%2FSimulation%20tools.) project with the [Nexys A7](https://digilent.com/shop/nexys-a7-fpga-trainer-board-recommended-for-ece-curriculum/) as the target board, and add all downloaded files as Source Files. Program the FPGA board by connecting the board to your PC via microUSB-to-USB, Synthesizing, Implementing, Generating Bitstream, and Program Device.
+1. Download all files in the `Source Code` and `Constraints` directories. Create a new [Vivado](https://www.xilinx.com/products/design-tools/vivado.html#:~:text=Vivado%20is%20the%20design%20software,Route%2C%20Verification%2FSimulation%20tools.) project with the [Nexys A7](https://digilent.com/shop/nexys-a7-fpga-trainer-board-recommended-for-ece-curriculum/) as the target board, and add all `Source Code` files as design sources, and the constraint file as a constraint. Program the FPGA board by connecting the board to your PC via microUSB-to-USB, Synthesizing, Implementing, Generating Bitstream, and (Hardware Manager) Program Device.
 2. Download the `py2UART.py` script. You will need to have [Python](https://www.python.org/downloads/) installed, as well as the `pyserial` package for serial connections, so run `pip install pyserial` in your favorite terminal to install it.
 3. Within the `py2UART.py` script, you must change the port for the serial connection to the port your FPGA is connected to. An useful command is included in the script, but you can also use Device Manager (on Windows) to easily find which port to put in the script. Save your edit!
-4. You're all set! Simply execute the `py2UART.py` script, and follow its instructions to encrypt or decrypt your data! Note: encryption mode or decryption mode can be toggled by the *rightmost* switch on the Nexys A7.
-
-To run this program, all the user needs is a message to send. Assuming the FPGA is already programmed, the user should first decide if they are *encrypting* or *decrypting* a message, which can be toggled using a switch on the FPGA board. After running the Python script `py2UART.py`, the user will be asked if their input will be in the form of ASCII or Hexadecimal. After making a decision, the user will be able to send up to 128 bits of data in either format. After inputting their data, ...
-
-...the user can press the center button on the FPGA board to receive the output. This output will be in Hexadecimal, and depending on the user's earlier choice will either be the encrypted or decrypted version of their input.
-
-***OR***
-
-...the FPGA board will automatically output either the encrypted or decrypted version of their input, depending on the user's earlier choice. 
-
-Whether encrypting or decrypting, this output is based on a key, which is meant to be irregularly changed and thus is hard-coded. If the user inputs a real message and our project *encrypts* it, the user will be able to use this key on our or another SIMON64/96 cipher device to decrypt that message back to its original form. This key and its functionality in the SIMON section of the project will be discussed more thoroughly in a later section of this overview.
+4. You're all set! Simply execute the `py2UART.py` script, and follow its instructions to encrypt or decrypt your data! Note: Encryption mode or decryption mode can be toggled by the *rightmost* switch on the Nexys A7 (encryption is indicated by the switch being up and the led above it being on; decryption is vice-versa).
 
 
 ## Code Overview
-Our code combines two mostly separate systems that were combined toward the end of the project's completion date. These two general systems are the SIMON encrypt/decrypt modules and the UART modules. Additionally, we are utilizing a small but impactful Python script to improve the user interface of our project. Each module is commented on thoroughly to improve readability, and we encourage any potential readers to utilize this to gain a better understanding of this project, as this overview is not intended to provide more than a surface-level description of the project's inner workings.
+A brief overview is provided here for each major component of our project. For readers wishing to gain a more elaborate understanding of this project, we encourage you to see the source code files, which are commented/documented thoroughly, as well as view the [Demo Video](#demo-video).
 
 ### SIMON64/96
-SIMON modules description here.
+SIMON64/96, which supports a *64-bit* block with a *96-bit* key, is a particular implementation of one configuration of the SIMON family of block ciphers. SIMON follows the [Feistel structure](https://en.wikipedia.org/wiki/Feistel_cipher), and as such, SIMON ciphers consist of two main functions (modules in this case), the key-schedule function `keySchedule.v` and the round function(`encryptRound.v` and `decryptRound.v`). 
+
+In the case of SIMON64/96, the key-schedule function receives a 96-bit key and generates 42, 32-bit *round keys* to be used in the round function. The round function receives a 32-bit round key and a 64-bit input *block*. It splits it into two 32-bit *words*, performs a set of bitwise operations on one of the words (one of which includes xor'ing the round key), and performs a final swap between words. The round function is executed for a total of 42 rounds/times (number of rounds is configuration-specific). Please refer to the [Learn More!](#learn-more!) section for more information on the exact algorithm of the SIMON family of block ciphers.
 
 ### UART
 The UART system works utilizing eight modules, one of which is the uppermost top module that works with the SIMON modules as well as the UART modules. `uart.v` module is the "top" module for the UART system and calls each of the lower modules to make the interaction between the user's inputs and the FPGA possible. `uart_transmitter.v` and `fifo_tx.v` both work to translate the parallel data from the Python script, named `py2UART.py` into a form that is understood by the FPGA (serial data). `uart_receiver.v` and `fifo_rx.v` do the opposite, and convert the FPGA's serial data into parallel form for `py2UART.py` to interpret. The remaining module, `baud_rate_generator.v` creates a baud rate for the rest of the UART modules, which functionally is similar to a clock in other verilog programs.
