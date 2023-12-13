@@ -31,7 +31,7 @@ The UART system works utilizing eight modules, one of which is the uppermost top
 ### Python Scripts
 Two Python scripts are included in this repo. `py2UART.py` is the script used on a user's PC to interface with the FPGA via UART, and prompts the user for the desired key and message to be encrypted/decrypted. The script handles the rest of the data transmission and reception in the background, with the FPGA receiving data, performing the cipher operations, and transmitting the data back to the PC.
 
-`pySIMON64_96.py` is a Python implementation of the same SIMON64/96 cipher, primarily for comparison and benchmarking the performance of the SIMON cipher on FPGA (hardware) versus Python (software). Our implementation does not showcase a significant benefit in using FPGA over Python, largely because our implementation currently only supports 2 blocks (128 bits). As the number of bits to be encrypted/decrypted increased, the FPGA would perform faster than the Python script, due to the fact it would be able to properly utilize the parallel processing of FPGAs over the sequential processing of Python.
+`pySIMON64_96.py` is a Python implementation of the same SIMON64/96 cipher, primarily for comparison and benchmarking the performance of the SIMON cipher on FPGA (hardware) versus Python (software). Our Verilog implementation does not showcase a significant benefit in using FPGA over Python, largely because our implementation currently only supports 2 blocks (128 bits). As the number of bits to be encrypted/decrypted increased, the FPGA would perform faster than the Python script, due to the fact it would be able to properly utilize the parallel processing of FPGAs over the sequential processing of Python.
 
 
 ## Learn More!
