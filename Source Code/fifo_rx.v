@@ -2,7 +2,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-module fifo
+module fifo_rx
 	#(
 	   parameter	DATA_SIZE 	   = 8,	       // number of bits in a data word
 			ADDR_SPACE_EXP = 5	       // number of address bits (2^5 = 32 addresses)

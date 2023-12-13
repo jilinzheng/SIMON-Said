@@ -29,19 +29,19 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module uart_top
+module uart
     #(
         parameter   DBITS = 8,          // number of data bits in a word
                     SB_TICK = 16,       // number of stop bit / oversampling ticks
                     BR_LIMIT = 651,     // baud rate generator counter limit
                     BR_BITS = 10,       // number of baud rate generator counter bits
                     FIFO_EXP = 5,       // exponent for number of FIFO addresses (2^5 = 64)
-                    FIFO_EXP2 = 3        // exponent for number of FIFO2 addresses (2^3 = 8)
+                    FIFO_EXP2 = 4        // exponent for number of FIFO2 addresses (2^4 = 16)
     )
     (
         input clk_100MHz,               // FPGA clock
         input reset,                    // reset
-	    input encrypt_end,		// button
+	   // input encrypt_end,		// button
         input rx,                       // serial data in
         output tx,                      // serial data out
         output rx_empty,                //to display on 7 segment
@@ -56,8 +56,11 @@ module uart_top
     wire tx_done;                  // data transmission complete
     wire [DBITS-1:0] rx_data_out;       // from UART receiver to Rx FIFO
     wire [DBITS-1:0] tx_fifo_out;       //ascii back to host computer
-    wire tx_empty;       //to see when to transmit
+    wire tx_empty;       //to see when to transmit]
     wire tx_fifo_not_empty;        //opposite of tx_empty
+    
+   
+    
     
     // Instantiate Modules for UART Core
     baud_rate_generator 
@@ -88,8 +91,8 @@ module uart_top
             .data_out(rx_data_out)  //send receieved ascii to fifo
          );
          
-    //accumulate data until 8 ascii, send 64 bits when button pressed
-    fifo
+    //accumulate data until 8 ascii, send 256 bits when full
+    fifo_rx
         #(
             .DATA_SIZE(DBITS),
             .ADDR_SPACE_EXP(FIFO_EXP)
@@ -98,7 +101,7 @@ module uart_top
          (
             .clk_100MHz(clk_100MHz),
             .reset(reset),
-            .write_to_fifo(rx_done),    //put ascii into fifo everytime receieve (until all 8 ascii in)
+            .write_to_fifo(rx_done),    //put ascii into fifo everytime receieve (until all ascii in)
 	        .read_from_fifo(rx_full),    //start encryption with button
 	        .write_data_in(rx_data_out),   //put ascii into fifo
 	        .read_data_out(read_data),  //256 bits of data with key/data info
@@ -106,8 +109,8 @@ module uart_top
 	        .full(rx_full)     //output for display
 	      );
     
-    //take in the new 64 bits and send back the 8 ascii one by one when button pressed
-    fifo2
+    //take in the new 128 bits of encrypted data and send back the ascii one by one when button pressed
+    fifo_tx
         #(
             .DATA_SIZE(DBITS),
             .ADDR_SPACE_EXP(FIFO_EXP2)
@@ -116,12 +119,13 @@ module uart_top
          (
             .clk_100MHz(clk_100MHz),
             .reset(reset),
-		 .write_to_fifo(encrypt_end),    //load the 64 bits when button pressed
+		 .write_to_fifo(rx_full),    //load the 128 bits when button pressed
 	        .read_from_fifo(tx_done),    //whenever not transmitting, send to transmitter
-	        .write_data_in(write_data),   //put 64 bits in memory
+	        .write_data_in(write_data),   //put 128 bits in memory
 	        .read_data_out(tx_fifo_out),  //ascii to output
 	        .empty(tx_empty)  //output for display
 	      );
+	      
     
     //transfer the ascii back
     uart_transmitter

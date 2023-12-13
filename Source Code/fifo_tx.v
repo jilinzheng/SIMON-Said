@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module fifo2
+module fifo_tx
 	#(
 	   parameter	DATA_SIZE 	   = 8,	       // number of bits in a data word
 			ADDR_SPACE_EXP = 4	       // number of address bits (2^3 = 8 addresses)

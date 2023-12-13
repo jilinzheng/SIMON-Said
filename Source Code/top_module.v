@@ -6,13 +6,14 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 
-module uart_test(
+module top_module(
     input clk_100MHz,       //  FPGA clock signal
     input reset,            // btnR    
     //input btn,              // Encrypt end button
     input rx,               // USB-RS232 Rx
     output tx,              // USB-RS232 Tx
     input switch,           //switch for encrypt or decrypt
+    output led,             
     output [7:0] an,        // 7 segment display digits
     output [0:6] seg        // 7 segment display segments
     );
@@ -25,7 +26,7 @@ module uart_test(
     wire [255:0] data;  //key is 0-95, encrypt_in1 in is 96-159, encrypt_in2 is 160-223
     
     // Complete UART Core
-    uart_top UART_UNIT
+    uart UART_UNIT
         (
             .clk_100MHz(clk_100MHz),
             .reset(reset),            //reset when middle button pressed
@@ -54,7 +55,7 @@ module uart_test(
     assign seg = {~rx_full, 2'b11, ~rx_empty, 3'b111};      //line down if empty, line up if full, only can click button when full
     
     //ENCRYPTION PERFORMED HERE
-    simon64_96 encoder
+    simon64_96 blockCipher1
     (
         .encryptOrDecrypt(switch),
         .inText(data[159:96]),  //first set of 8 characters getting encrypted
@@ -62,13 +63,14 @@ module uart_test(
         .outText(encrypt_out)
     );
     
-    simon64_96 encoder2
+    simon64_96 blockCipher2
     (
         .encryptOrDecrypt(switch),
         .inText(data[223:160]), //second set of 8 characters getting encrypted
         .key(data[95:0]),
         .outText(encrypt_out2)
     );
-      
+    
+    assign led = switch;
       
 endmodule
