@@ -26,6 +26,5 @@ module keySchedule_test(
         roundKeyMinus1 = 32'hffae9dce;
         // Output should be 0xc4facc91
         
-        // ADD 8 MORE
     end
 endmodule
