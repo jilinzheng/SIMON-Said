@@ -35,7 +35,7 @@ module uart
                     SB_TICK = 16,       // number of stop bit / oversampling ticks
                     BR_LIMIT = 651,     // baud rate generator counter limit
                     BR_BITS = 10,       // number of baud rate generator counter bits
-                    FIFO_EXP = 5,       // exponent for number of FIFO addresses (2^5 = 64)
+	   	    FIFO_EXP = 5,       // exponent for number of FIFO addresses (2^5 = 32)
                     FIFO_EXP2 = 4        // exponent for number of FIFO2 addresses (2^4 = 16)
     )
     (
@@ -56,7 +56,7 @@ module uart
     wire tx_done;                  // data transmission complete
     wire [DBITS-1:0] rx_data_out;       // from UART receiver to Rx FIFO
     wire [DBITS-1:0] tx_fifo_out;       //ascii back to host computer
-    wire tx_empty;       //to see when to transmit]
+    wire tx_empty;       		//to see when to transmit
     wire tx_fifo_not_empty;        //opposite of tx_empty
     
    
@@ -101,15 +101,15 @@ module uart
          (
             .clk_100MHz(clk_100MHz),
             .reset(reset),
-            .write_to_fifo(rx_done),    //put ascii into fifo everytime receieve (until all ascii in)
+            .write_to_fifo(rx_done),    //put ascii into fifo everytime receive (until all ascii in)
 	        .read_from_fifo(rx_full),    //start encryption with button
 	        .write_data_in(rx_data_out),   //put ascii into fifo
 	        .read_data_out(read_data),  //256 bits of data with key/data info
-	        .empty(rx_empty),  //output for display
-	        .full(rx_full)     //output for display
+		 .empty(rx_empty),  //output for 7 seg display
+		 .full(rx_full)     //output for 7 seg display
 	      );
     
-    //take in the new 128 bits of encrypted data and send back the ascii one by one when button pressed
+    //take in the new 128 bits of encrypted data and send back the ascii one by one automatically
     fifo_tx
         #(
             .DATA_SIZE(DBITS),
@@ -119,11 +119,11 @@ module uart
          (
             .clk_100MHz(clk_100MHz),
             .reset(reset),
-		 .write_to_fifo(rx_full),    //load the 128 bits when button pressed
+		 .write_to_fifo(rx_full),    //load the 128 bits automatically
 	        .read_from_fifo(tx_done),    //whenever not transmitting, send to transmitter
 	        .write_data_in(write_data),   //put 128 bits in memory
 	        .read_data_out(tx_fifo_out),  //ascii to output
-	        .empty(tx_empty)  //output for display
+	        .empty(tx_empty)  
 	      );
 	      
     
