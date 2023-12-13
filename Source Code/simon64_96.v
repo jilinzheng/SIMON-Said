@@ -7,12 +7,7 @@ module simon64_96(
         input [95:0] key,                           // 96-bit key size/32-bit words = 3 key words = m
         output [63:0] outText                       // Output text 
     );
-    
-    // For a SIMON64/96 cipher,
-    localparam T = 42;                              // Rounds
-    localparam j = 2;                               // jth bit of constSeqZ
-    
-    //reg [95:0] key = 96'h131211100b0a090803020100;  // temporary hard-coded
+        
     
     // Key-Scheduling
     wire [31:0] roundKeys [41:0];                   // 42, 32-bit round keys for 42 rounds SIMON64/96
