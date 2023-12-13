@@ -1,4 +1,4 @@
-# SIMON Said!
+# SIMON-Said!
 **Team Members: Renad Alanazi, Jackson Clary, Rayan Syed, Jilin Zheng**
 
 
